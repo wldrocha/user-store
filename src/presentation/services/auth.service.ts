@@ -1,4 +1,4 @@
-import { CustomError, RegisterUserDto } from '../../config'
+import { CustomError, RegisterUserDto, UserEntity } from '../../config'
 import { UserModel } from '../../data'
 
 export class AuthService {
@@ -7,6 +7,20 @@ export class AuthService {
     const existUser = await UserModel.findOne({ email: registerUserDto.email })
     if (existUser) throw CustomError.badRequest('User already exists')
 
-    return 'todo ok'
+    try {
+      const user = new UserModel(registerUserDto)
+      await user.save()
+
+      // Todo: Encrypt password
+      // Todo JWT
+
+      // Todo: Send email confirmation
+
+      const { password, ...userEntity } = UserEntity.fromObject(user)
+
+      return { user: userEntity, token: 'token123' }
+    } catch (error) {
+      throw CustomError.internalServer(`${error}`)
+    }
   }
 }
