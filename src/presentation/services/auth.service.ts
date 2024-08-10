@@ -1,5 +1,5 @@
-import { CustomError, RegisterUserDto, UserEntity } from '../../config'
 import { UserModel } from '../../data'
+import { CustomError, RegisterUserDto, UserEntity } from '../../domain'
 
 export class AuthService {
   constructor() {}
@@ -9,9 +9,10 @@ export class AuthService {
 
     try {
       const user = new UserModel(registerUserDto)
-      await user.save()
 
       // Todo: Encrypt password
+
+      await user.save()
       // Todo JWT
 
       // Todo: Send email confirmation
