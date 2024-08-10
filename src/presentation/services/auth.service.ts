@@ -1,7 +1,6 @@
-import { bcryptAdapter } from '../../config'
+import { bcryptAdapter, JWTAdapter } from '../../config'
 import { UserModel } from '../../data'
 import { CustomError, LoginUserDto, RegisterUserDto, UserEntity } from '../../domain'
-// import { CustomError, LoginUserDto, RegisterUserDto, UserEntity } from '../../domain'
 
 export class AuthService {
   constructor() {}
@@ -12,16 +11,16 @@ export class AuthService {
     try {
       const user = new UserModel(registerUserDto)
 
-      // Todo: Encrypt password
       user.password = bcryptAdapter.hash(registerUserDto.password)
       await user.save()
-      // Todo JWT
-
-      // Todo: Send email confirmation
 
       const { password, ...userEntity } = UserEntity.fromObject(user)
+      const token = await JWTAdapter.generateToken({ id: userEntity.id })
 
-      return { user: userEntity, token: 'token123' }
+      if (!token) throw CustomError.internalServer('Error generating token')
+      // Todo: Send email confirmation
+
+      return { user: userEntity, token }
     } catch (error) {
       throw CustomError.internalServer(`${error}`)
     }
@@ -37,6 +36,10 @@ export class AuthService {
 
     const { password, ...userEntity } = UserEntity.fromObject(user)
 
-    return { user: userEntity, token: 'token123' }
+    const token = await JWTAdapter.generateToken({ id: userEntity.id })
+
+    if (!token) throw CustomError.internalServer('Error generating token')
+
+    return { user: userEntity, token }
   }
 }
