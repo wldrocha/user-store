@@ -13,8 +13,13 @@ export class JWTAdapter {
       })
     })
   }
-  // Todo incomplete method
+
   static validateToken(token: string) {
-    throw new Error('Method not implemented.')
+    return new Promise((resolve) => {
+      jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        if (err) resolve(null)
+        resolve(decoded)
+      })
+    })
   }
 }
