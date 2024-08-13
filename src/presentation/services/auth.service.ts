@@ -19,7 +19,7 @@ export class AuthService {
       const token = await JWTAdapter.generateToken({ id: userEntity.id })
 
       if (!token) throw CustomError.internalServer('Error generating token')
-      // Todo: Send email confirmation
+
       this.sendEmailValidationLink(user.email)
 
       return { user: userEntity, token }
@@ -62,6 +62,21 @@ export class AuthService {
 
     const isSent = await this.emailService.sendEmail(options)
     if (!isSent) throw CustomError.internalServer('Error sending email')
+    return true
+  }
+
+  public validateEmail = async (token: string) => {
+    const payload = await JWTAdapter.validateToken(token)
+    if (!payload) throw CustomError.unauthorized('Invalid token')
+
+    const { email } = payload as { email: string }
+    if (!email) throw CustomError.internalServer('IEmail not in token')
+
+    const user = await UserModel.findOne({ email })
+    if (!user) throw CustomError.internalServer('User email not exist')
+
+    user.emailValidated = true
+    await user.save()
     return true
   }
 }
