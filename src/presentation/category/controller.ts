@@ -15,9 +15,12 @@ export class CategoryController {
     res.json({ message: 'Get categories' })
   }
   createCategory = (req: Request, res: Response) => {
-    const createCategoryDto = CreateCategoryDto.create(req.body)
+    const [error, createCategoryDto] = CreateCategoryDto.create(req.body)
+    if (error) {
+      return res.status(400).json({ error })
+    }
 
-    res.json({ createCategoryDto })
+    res.json(req.body)
   }
   updateCategory = (req: Request, res: Response) => {
     res.json({ message: 'Update category' })
