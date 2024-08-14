@@ -10,7 +10,7 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
-  prive: {
+  price: {
     type: Number,
     default: 0
   },
