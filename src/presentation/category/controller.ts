@@ -17,11 +17,11 @@ export class CategoryController {
 
     const [error, paginationDto] = PaginationDto.create(Number(page), Number(limit))
     if (error)  return res.status(400).json({ error })
-    res.json({ page, limit })
-    // this.categoryService
-    //   .listCategories()
-    //   .then((categories) => res.json(categories))
-    //   .catch((error) => this.handleError(error, res))
+
+    this.categoryService
+      .listCategories(paginationDto!)
+      .then((categories) => res.json(categories))
+      .catch((error) => this.handleError(error, res))
   }
   createCategory = (req: Request, res: Response) => {
     const [error, createCategoryDto] = CreateCategoryDto.create(req.body)
