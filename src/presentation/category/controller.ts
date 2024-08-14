@@ -13,11 +13,13 @@ export class CategoryController {
   }
 
   getCategories = (req: Request, res: Response) => {
-    res.json({ message: 'Get categories' })
+    this.categoryService
+      .listCategories()
+      .then((categories) => res.json(categories))
+      .catch((error) => this.handleError(error, res))
   }
   createCategory = (req: Request, res: Response) => {
     const [error, createCategoryDto] = CreateCategoryDto.create(req.body)
-    console.log("🚀 ~ CategoryController ~ createCategoryDto:", createCategoryDto)
     if (error) {
       return res.status(400).json({ error })
     }
@@ -26,7 +28,6 @@ export class CategoryController {
       .createCategory(createCategoryDto!, req.body.user)
       .then((category) => res.status(201).json(category))
       .catch((error) => this.handleError(error, res))
-
   }
   updateCategory = (req: Request, res: Response) => {
     res.json({ message: 'Update category' })
