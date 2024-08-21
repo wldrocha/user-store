@@ -10,7 +10,7 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
-  prive: {
+  price: {
     type: Number,
     default: 0
   },
@@ -26,6 +26,14 @@ const productSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'Category',
     required: [true, 'Category is required']
+  }
+})
+
+productSchema.set('toJSON', {
+  virtuals: true, // show id
+  versionKey: false, // remove __v
+  transform: function (doc, ret, options) { // not used arrow function to use this
+    delete ret._id
   }
 })
 
