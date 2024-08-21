@@ -12,6 +12,8 @@ export class FileUploadController {
   }
 
   uploadFile = (req: Request, res: Response) => {
+    console.log("🚀 ~ FileUploadController ~ req:", req.files)
+    
     res.json({ message: 'File uploaded successfully' })
   }
   uploadMultipleFile = (req: Request, res: Response) => {
