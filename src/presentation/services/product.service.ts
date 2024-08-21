@@ -29,9 +29,7 @@ export class ProductService {
           .skip((page - 1) * limit)
           .limit(limit)
           .populate('user')
-          
-          // .populate('user', 'name email role')
-          // Todo delete thought virtual delete _id, pass and only show id and populate category and modify category response
+          .populate('category')
       ])
 
       return {
