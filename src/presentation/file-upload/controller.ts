@@ -9,13 +9,13 @@ export class FileUploadController {
     if (error instanceof CustomError) {
       return res.status(error.statusCode).json({ error: error.message })
     }
-    console.log('🚀 ~ AuthController ~ error:', error)
+    
     return res.status(500).json({ error: 'Internal server error' })
   }
 
   uploadFile = (req: Request, res: Response) => {
     const files = req.files
-    console.log("🚀 ~ FileUploadController ~ files:", files)
+
     if (!files || Object.keys(files).length === 0) {
       return res.status(400).json({ error: 'No files were selected' })
     }

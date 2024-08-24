@@ -1,5 +1,6 @@
 export * from './adapter-library/bcrypt.adapter'
 export * from './adapter-library/jwt.adapter'
+export * from './adapter-library/uuid.adapter'
 export * from './envs'
 export * from './regular-exp'
 export * from './validators'
